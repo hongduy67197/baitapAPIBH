@@ -25,9 +25,6 @@ app.use(
 );
 
 app.use("/", Router);
-app.get("/login", (req, res) => {
-  res.render("login.ejs");
-});
 
 app.listen(8000, () => {
   console.log("server abc chay cong 8000");

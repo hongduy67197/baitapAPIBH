@@ -75,11 +75,8 @@ $("#search").click(function () {
     } else if (typesearch == "ingredients") {
       console.log(456456);
       $.ajax({
-        url: `/searchcocktail`,
+        url: `/searchcocktail?ingredients=${textinput}`,
         type: "GET",
-        data: {
-          ingredients: textinput,
-        },
       })
         .then((data) => {
           window.location.href = `/searchcocktail?ingredients=${textinput}`;
