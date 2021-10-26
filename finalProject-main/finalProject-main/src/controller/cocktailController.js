@@ -6,7 +6,8 @@ exports.getLists = async function (req, res) {
     let listdatas = {
       listallcocktail: cocktail,
     };
-    res.render("cocktail.ejs", listdatas);
+    // res.render("cocktail.ejs", listdatas);
+    res.json(listdatas);
   } catch (error) {
     console.log(error);
   }
@@ -17,7 +18,7 @@ exports.createCocktail = async function (req, res) {
     let { name, category, instruction, image, ingredients } = req.body;
     console.log(18, req.body.ingredients);
 
-    let newProject = await cocktailModel.create({
+    let newCocktail = await cocktailModel.create({
       name: name,
       category: category,
       instruction: instruction,
@@ -25,7 +26,7 @@ exports.createCocktail = async function (req, res) {
       ingredients: ingredients,
     });
 
-    res.json({ status: 200, mess: "New cocktail" });
+    res.json({ status: 200, mess: "New cocktail" }, newCocktail);
   } catch (error) {
     res.json({ status: 500 }, error);
   }
@@ -45,7 +46,8 @@ exports.searchcocktail = async function (req, res) {
       });
     }
 
-    res.render("searchcocktail.ejs", { cocktailList: searchlist });
+    // res.render("searchcocktail.ejs", { cocktailList: searchlist });
+    res.json({ cocktailList: searchlist });
   } catch (error) {
     res.json({ status: 500 }, error);
   }
@@ -53,7 +55,8 @@ exports.searchcocktail = async function (req, res) {
 
 exports.updateCocktail = async function (req, res) {
   try {
-    const { id, name, category, instruction, image, ingredients } = req.body;
+    const id = req.param.idcocktail;
+    const { name, category, instruction, image, ingredients } = req.body;
     let upCocktail = await cocktailModel.updateOne(
       { _id: id },
       {

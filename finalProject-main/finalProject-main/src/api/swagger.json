@@ -1,0 +1,334 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Cocktail API",
+        "version":"1.0.0",
+        "title": "Cocktail API",
+        "contact": {
+          "name": "Cocktail",
+          "url": "http://localhost:8000"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "basePath": "/api",
+    "schemes": [
+    "https",
+    "http"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+      "/searchcocktail":{
+        "get":{
+            "summary": "Get cocktail",
+        "description": "We could search cocktail by Ingredients or Cocktail name",
+        "tags": [
+          "cocktail"
+        ],
+        "operationId": "GetCocktailByCocktailnameOrByIngredients",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "description": "coctailname  of the cocktail to get",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ingredients",
+            "in": "query",
+            "description": "ingredients  of the cocktail to get",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CocktailResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/GenericErrorModel"
+            }
+          }
+        }
+        }
+      },
+
+      "/cocktail":{
+        "post": {
+            "summary": "Create new cocktail",
+            "description": "Create new cocktail. Auth is required",
+            "tags": [
+              "cocktail"
+            ],
+            "operationId": "CreateCocktail",
+            "parameters": [
+                {
+                    "name": "body",
+                    "in": "body",
+                    "required": true,
+                    "description": "Details of the new cocktail",
+                    "schema": {
+                      "$ref": "#/definitions/NewCocktailRequest"
+                    }
+                  }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/CocktailResponse"
+                }
+              },
+              "401": {
+                "description": "Unauthorized"
+              },
+              "422": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/GenericErrorModel"
+                }
+              }
+            }
+        }
+      },
+      "/cocktail/{idcocktail}":{
+        "put":{
+            "summary": "Update current cocktail",
+            "description": "Updated cocktail information for current cocktail",
+            "tags": [
+              "cocktail"
+            ],
+            "operationId": "UpdateCurrentCocktail",
+            "parameters": [
+                {
+                    "name":"idcocktail",
+                    "in":"path",
+                    "required":true,
+                    "description":"ID of the cocktail that you want to update",
+                    "type":"string"
+                },
+              {
+                "name": "body",
+                "in": "body",
+                "required": false,
+                "description": "Update cocktail of the cocktail",
+                "schema": {
+                    "$ref": "#/definitions/UpdateCocktailRequest"
+                  }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "$ref": "#/definitions/CocktailResponse"
+                }
+              },
+              "401": {
+                "description": "Unauthorized"
+              },
+              "422": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/GenericErrorModel"
+                }
+              }
+            }
+        },
+        "delete": {
+            "summary": "Delete a cocktail",
+            "description": "Deleta a cocktail by idcocktail",
+            "tags": [
+              "cocktail"
+            ],
+            "operationId": "DeleteCocktailByIdCocktail",
+            "parameters": [
+              {
+                "name": "idcocktail",
+                "in": "path",
+                "description": "idcocktail of the cocktail you want to delete",
+                "required": true,
+                "type": "string"
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                    "$ref": "#/definitions/CocktailResponse"
+                  }
+              },
+              "401": {
+                "description": "Unauthorized"
+              },
+              "422": {
+                "description": "Unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/GenericErrorModel"
+                }
+              }
+            }
+          }
+      }
+  },
+  "definitions":{
+    "UpdateCocktailRequest": {
+        "type": "object",
+        "properties": {
+          "cocktail": {
+            "$ref": "#/definitions/UpdateCocktail"
+          }
+        },
+        "required": [
+          "cocktail"
+        ]
+    },
+      "Cocktail":{
+          "type": "object",
+          "properties": {
+            "name": {
+                "type":"string"
+            },
+            "category": {
+                "type":"string"
+            },
+            "instruction": {
+                "type":"string"
+            },
+            "image": {
+                "type":"string"
+            },
+            "ingredients": {
+                "type":"array",
+                "items":{
+                    "type": "string"
+                }
+            }
+          },
+          "required": [
+            "name",
+            "category",
+            "instruction",
+            "image",
+            "ingredients"
+          ]
+      }, 
+      "NewCocktail": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type":"string"
+            },
+            "category": {
+                "type":"string"
+            },
+            "instruction": {
+                "type":"string"
+            },
+            "image": {
+                "type":"string"
+            },
+            "ingredients": {
+                "type":"array",
+                "items":{
+                    "type": "string"
+                }
+            }
+        },
+        "required": [
+            "name",
+            "category",
+            "instruction",
+            "image",
+            "ingredients"
+        ]
+      },
+      "NewCocktailRequest": {
+        "type": "object",
+        "properties": {
+          "cocktail": {
+            "$ref": "#/definitions/NewCocktail"
+          }
+        },
+        "required": [
+          "cocktail"
+        ]
+      }
+      ,"CocktailResponse": {
+        "type": "object",
+        "properties": {
+          "cocktail": {
+            "$ref": "#/definitions/Cocktail"
+          }
+        },
+        "required": [
+          "cocktail"
+        ]
+      }, 
+    "UpdateCocktail": {
+      "type": "object",
+      "properties": {
+        "name": {
+            "type":"string"
+        },
+        "category": {
+            "type":"string"
+        },
+        "instruction": {
+            "type":"string"
+        },
+        "image": {
+            "type":"string"
+        },
+        "ingredients": {
+            "type":"array",
+            "items":{
+                "type": "string"
+            }
+        }, 
+        "idcocktail":{
+            "type":"string"
+        }
+        
+      }
+    },
+    "GenericErrorModel": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "properties": {
+              "body": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "body"
+            ]
+          }
+        },
+        "required": [
+          "errors"
+        ]
+      }
+  }
+}
