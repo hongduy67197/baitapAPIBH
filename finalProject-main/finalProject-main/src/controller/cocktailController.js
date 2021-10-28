@@ -26,7 +26,7 @@ exports.createCocktail = async function (req, res) {
       ingredients: ingredients,
     });
 
-    res.json({ status: 200, mess: "New cocktail" }, newCocktail);
+    res.status(201).json(newCocktail);
   } catch (error) {
     res.json({ status: 500 }, error);
   }
@@ -35,17 +35,16 @@ exports.createCocktail = async function (req, res) {
 exports.searchcocktail = async function (req, res) {
   try {
     let searchlist;
-    console.log(37, req.query);
     if (req.query.name) {
       searchlist = await cocktailModel.find({
         name: { $regex: `.*${req.query.name}.*` },
       });
     } else if (req.query.ingredients) {
+      console.log(42, req.query.ingredients);
       searchlist = await cocktailModel.find({
-        ingredients: req.query.ingredients,
+        ingredients: { $in: req.query.ingredients },
       });
     }
-
     // res.render("searchcocktail.ejs", { cocktailList: searchlist });
     res.json({ cocktailList: searchlist });
   } catch (error) {
@@ -55,8 +54,8 @@ exports.searchcocktail = async function (req, res) {
 
 exports.updateCocktail = async function (req, res) {
   try {
-    const id = req.param.idcocktail;
-    const { name, category, instruction, image, ingredients } = req.body;
+    let id = req.params.idcocktail;
+    let { name, category, instruction, image, ingredients } = req.body;
     let upCocktail = await cocktailModel.updateOne(
       { _id: id },
       {
@@ -67,19 +66,19 @@ exports.updateCocktail = async function (req, res) {
         ingredients: ingredients,
       }
     );
-    res.json({ status: 200, mess: "update thanh cong" }, upCocktail);
+    res.status(200).json(upCocktail);
   } catch (error) {
-    res.json({ status: 500, mess: "false update" }, error);
+    res.status(500).json(error);
   }
 };
 
 exports.deleteCocktail = async function (req, res) {
   try {
     const deletecocktails = await cocktailModel.deleteOne({
-      _id: req.param.idcocktail,
+      _id: req.params.idcocktail,
     });
-    res.json({ status: 200, mess: "Delete Cocktail" });
+    res.status(200).json("Delete Cocktail");
   } catch (error) {
-    res.json({ status: 500, mess: "false delete" }, error);
+    res.status(500).json(error);
   }
 };

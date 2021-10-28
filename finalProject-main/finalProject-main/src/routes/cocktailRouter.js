@@ -12,6 +12,6 @@ router.get("/api-docs", swaggerUi.setup(swaggerJsDoc));
 router.get("/cocktail", cocktailController.getLists);
 router.get("/searchcocktail", cocktailController.searchcocktail);
 router.post("/cocktail", cocktailController.createCocktail);
-router.put("/cocktail/:id", cocktailController.updateCocktail);
-router.delete("/cocktail/:id", cocktailController.deleteCocktail);
+router.put("/cocktail/:idcocktail", cocktailController.updateCocktail);
+router.delete("/cocktail/:idcocktail", cocktailController.deleteCocktail);
 module.exports = router;
